@@ -10,8 +10,12 @@ var Market = new Schema({
         required: true,
         unique: true,
     },
-    market_location: {
-        type: String,
+    market_locx: {
+        type: Float32Array,
+        required: true,
+    },
+    market_locy: {
+        type: Float32Array,
         required: true,
     },
     market_food: {
@@ -63,11 +67,12 @@ Market.statics.findMarketByIndex = async function (market_index) {
     return await this.findOne({"market_index": market_index});
 }
 
-Market.statics.create = async function (market_location, market_food, market_category, market_payment_method, market_explanation, market_image, market_authority, market_fixed, market_phone_number, market_owner){
+Market.statics.create = async function (market_locx, market_locy, market_food, market_category, market_payment_method, market_explanation, market_image, market_authority, market_fixed, market_phone_number, market_owner){
     const market = new this({
         _id: new mongoose.Types.ObjectId(),
         market_index: 0, // save pre hook에서 설정될 예정이므로 dummy 값 저장.
-        market_location: market_location,
+        market_locx: market_locx,
+        market_locy: market_locy,
         market_food: market_food,
         market_category: market_category,
         market_payment_method: market_payment_method,
@@ -93,13 +98,14 @@ Market.statics.delete = async function (market_index) {
     }
 }
 
-Market.statics.edit = async function (market_index, change_location, change_food, change_category, change_payment_method, change_explanation, change_image, change_authority, change_fixed, change_phone_number) {
+Market.statics.edit = async function (market_index, change_locx, market_locy, change_food, change_category, change_payment_method, change_explanation, change_image, change_authority, change_fixed, change_phone_number) {
     const market = await this.findOne({"market_index": market_index});
 
     if (market) {
         this.findOneAndUpdate({"market_index": market_index}, {
             $set: {
-                market_location: change_location,
+                market_locx: change_locx,
+                market_locy: market_locy,
                 market_food: change_food,
                 market_category: change_category,
                 market_payment_method: change_payment_method,
